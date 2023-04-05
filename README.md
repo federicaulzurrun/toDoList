@@ -23,10 +23,10 @@
 
 
 
-# 📖 [Awesome Books] <a name="about-project"></a>
+# 📖 To Do List <a name="about-project"></a>
 
 
-**Awesome Books**  We created this project using a wireframe with plain JavaScript ES6.
+**To do list**  We created this project using a wireframe with plain JavaScript.
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -45,8 +45,7 @@ First i use HTML 5 thas it's markup languange used for structuring and presentin
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
-- <a href="https://federicaulzurrun.github.io/ES6-AwesomeBooks/
-"> Visit the site!</a>
+- <a href="https://nimble-pithivier-7b20e9.netlify.app/"> Visit the site!</a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -71,7 +70,7 @@ In order to run this project you need:
 Clone this repository to your desired folder:
 
 ```sh
-  git clone https://github.com/federicaulzurrun/ES6-AwesomeBooks.git
+  git clone https://github.com/federicaulzurrun/toDoList.git
 ```
 
 ### Install
