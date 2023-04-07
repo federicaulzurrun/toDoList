@@ -18,7 +18,8 @@ input {
 }
 
 .checkbox-input,
-.delete-task-icon, .fas {
+.delete-task-icon,
+.fas {
   cursor: pointer;
 }
 
@@ -115,7 +116,6 @@ input {
   width: 60%;
   gap: 3%;
   padding-left: 2%;
-
 }
 
 .task-text p {
