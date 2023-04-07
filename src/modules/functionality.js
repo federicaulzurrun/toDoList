@@ -1,11 +1,10 @@
-// select elements
-const newToDo = document.getElementById('imput-task');
 const containerTask = document.getElementById('toDo-list');
+const newToDo = document.getElementById('imput-task');
 
 // vars
-let toDos = JSON.parse(localStorage.getItem('toDos')) || [];
+let toDos = [];
 
-// add tasks
+// function add taks
 const addTask = () => {
   const toDoValue = newToDo.value;
   const emptyToDo = toDoValue === '';

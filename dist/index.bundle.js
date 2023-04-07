@@ -11,7 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const form = document.getElementById('list-form');
 const containerTask = document.getElementById('toDo-list');
-const toDos = [];
+let toDos = [];
 
 // form submit
 form.addEventListener('submit', (event) => {
@@ -20,21 +20,6 @@ form.addEventListener('submit', (event) => {
   (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.addTask)();
   (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
   localStorage.setItem('toDos', JSON.stringify(toDos));
-});
-
-// edit task
-containerTask.addEventListener('click', (event) => {
-  if (event.target.classList.contains('edit-task-icon')) {
-    const taskElement = event.target.parentNode;
-    // eslint-disable-next-line radix
-    const taskId = parseInt(taskElement.querySelector('.text-input').getAttribute('data-id'));
-    const taskIndex = toDos.findIndex((task) => task.id === taskId);
-    const taskInput = taskElement.querySelector('.text-input');
-    const newTaskValue = taskInput.value;
-    toDos[taskIndex].value = newTaskValue;
-    localStorage.setItem('toDos', JSON.stringify(toDos));
-    (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
-  }
 });
 
 // delete task
@@ -47,7 +32,8 @@ containerTask.addEventListener('click', (event) => {
     taskElement.remove();
 
     // update the id of the remaining tasks
-    for (let i = taskIndex; i < toDos.length; i += 1) {
+    // eslint-disable-next-line no-plusplus
+    for (let i = taskIndex; i < toDos.length; i++) {
       toDos[i].id = i + 1;
     }
 
@@ -55,34 +41,48 @@ containerTask.addEventListener('click', (event) => {
   }
 });
 
+// clear all checked button
+
 const clearBtn = document.getElementById('clear-btn');
 clearBtn.addEventListener('click', () => {
   const tasks = document.querySelectorAll('.task');
   const completedTasks = [];
   tasks.forEach((task, index) => {
     if (task.querySelector('.checkbox-input').checked) {
-      // eslint-disable-next-line radix
-      const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'));
+      const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
       const taskIndex = toDos.findIndex((task) => task.id === taskId);
+      toDos[taskIndex].id = index + 1;
+      task.querySelector('.text-input').setAttribute('data-id', index + 1);
       toDos.splice(taskIndex, 1);
       task.remove();
     } else {
       completedTasks.push(false);
     }
-    // update ids
-    // eslint-disable-next-line radix
-    const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'));
-    const taskIndex = toDos.findIndex((task) => task.id === taskId);
-    toDos[taskIndex].id = index + 1;
-    task.querySelector('.text-input').setAttribute('data-id', index + 1);
   });
   localStorage.setItem('toDos', JSON.stringify(toDos));
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
+// edit task
+containerTask.addEventListener('click', (event) => {
+  if (event.target.classList.contains('edit-task-icon')) {
+    const taskElement = event.target.parentNode;
+    const taskId = parseInt(taskElement.querySelector('.text-input').getAttribute('data-id'), 10);
+    const taskIndex = toDos.findIndex((task) => task.id === taskId);
+    const taskInput = taskElement.querySelector('.text-input');
+    const newTaskValue = taskInput.value;
+    toDos[taskIndex].value = newTaskValue;
+    localStorage.setItem('toDos', JSON.stringify(toDos));
+    (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
+  }
 });
 
+window.addEventListener('load', () => {
+  const storedToDos = JSON.parse(localStorage.getItem('toDos'));
+  if (storedToDos) {
+    toDos = storedToDos;
+    (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
+  }
+});
 
 /***/ }),
 /* 1 */
@@ -508,14 +508,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "addTask": () => (/* binding */ addTask),
 /* harmony export */   "renderToDo": () => (/* binding */ renderToDo)
 /* harmony export */ });
-// select elements
-const newToDo = document.getElementById('imput-task');
 const containerTask = document.getElementById('toDo-list');
+const newToDo = document.getElementById('imput-task');
 
 // vars
-let toDos = JSON.parse(localStorage.getItem('toDos')) || [];
+let toDos = [];
 
-// add tasks
+// function add taks
 const addTask = () => {
   const toDoValue = newToDo.value;
   const emptyToDo = toDoValue === '';
