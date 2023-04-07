@@ -101,6 +101,8 @@ input {
   border-bottom: 1px #ddd solid;
   margin-bottom: 2.5%;
   padding-bottom: 1%;
+  padding-left: 3%;
+  padding-right: 3%;
 }
 
 .text {
@@ -116,6 +118,7 @@ input {
   width: 60%;
   gap: 3%;
   padding-left: 2%;
+  justify-content: left;
 }
 
 .task-text p {
