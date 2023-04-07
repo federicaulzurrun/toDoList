@@ -1,11 +1,49 @@
 import './style.css';
 import {
-  addTask, renderToDo,
+  renderToDo, edit,
 } from './modules/functionality.js';
 
 const form = document.getElementById('list-form');
 const containerTask = document.getElementById('toDo-list');
+const newToDo = document.getElementById('imput-task');
 let toDos = [];
+
+// function add taks
+const addTask = () => {
+  const toDoValue = newToDo.value;
+  const emptyToDo = toDoValue === '';
+
+  if (emptyToDo) return;
+
+  const task = {
+    value: toDoValue,
+    completed: false,
+    id: toDos.length + 1,
+  };
+
+  newToDo.value = '';
+  toDos.push(task);
+  localStorage.setItem('todos', JSON.stringify(toDos));
+
+  renderToDo(); // llamamos a la función renderToDo para mostrar el nuevo elemento en la pantalla
+};
+
+// const addTask = () => {
+//   const toDoValue = newToDo.value;
+//   const emptyToDo = toDoValue === '';
+
+//   if (emptyToDo) return;
+//   const task = {
+//     value: toDoValue,
+//     completed: false,
+//     id: toDos.length + 1,
+//   };
+//   newToDo.value = '';
+//   toDos.push(task);
+//   localStorage.setItem('todos', JSON.stringify(toDos));
+// };
+const submitIcon = document.getElementById('submit-icon');
+submitIcon.addEventListener('click', addTask);
 
 // form submit
 form.addEventListener('submit', (event) => {
@@ -13,7 +51,7 @@ form.addEventListener('submit', (event) => {
 
   addTask();
   renderToDo();
-  localStorage.setItem('toDos', JSON.stringify(toDos));
+  localStorage.setItem('todos', JSON.stringify(toDos));
 });
 
 // delete task
@@ -31,47 +69,47 @@ containerTask.addEventListener('click', (event) => {
       toDos[i].id = i + 1;
     }
 
-    localStorage.setItem('toDos', JSON.stringify(toDos));
+    localStorage.setItem('todos', JSON.stringify(toDos));
   }
 });
 
 // clear all checked button
-
 const clearBtn = document.getElementById('clear-btn');
 clearBtn.addEventListener('click', () => {
   const tasks = document.querySelectorAll('.task');
   const completedTasks = [];
-  tasks.forEach((task, index) => {
+  const newToDos = []; // new list for remaing tasks
+  tasks.forEach((task) => {
     if (task.querySelector('.checkbox-input').checked) {
       const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
       const taskIndex = toDos.findIndex((task) => task.id === taskId);
-      toDos[taskIndex].id = index + 1;
-      task.querySelector('.text-input').setAttribute('data-id', index + 1);
       toDos.splice(taskIndex, 1);
       task.remove();
     } else {
       completedTasks.push(false);
+      const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
+      const taskIndex = toDos.findIndex((task) => task.id === taskId);
+      // Update the task index in the new list
+      newToDos.push({ ...toDos[taskIndex], id: newToDos.length + 1 });
     }
   });
-  localStorage.setItem('toDos', JSON.stringify(toDos));
+  // Update the variable on the new list
+  toDos = newToDos;
+  localStorage.setItem('todos', JSON.stringify(toDos));
 });
 
 // edit task
 containerTask.addEventListener('click', (event) => {
-  if (event.target.classList.contains('edit-task-icon')) {
-    const taskElement = event.target.parentNode;
-    const taskId = parseInt(taskElement.querySelector('.text-input').getAttribute('data-id'), 10);
-    const taskIndex = toDos.findIndex((task) => task.id === taskId);
-    const taskInput = taskElement.querySelector('.text-input');
-    const newTaskValue = taskInput.value;
-    toDos[taskIndex].value = newTaskValue;
-    localStorage.setItem('toDos', JSON.stringify(toDos));
-    renderToDo();
+  const textInput = event.target.closest('.text-input');
+  if (textInput) {
+    const textInputs = containerTask.querySelectorAll('.text-input');
+    const index = Array.from(textInputs).indexOf(textInput);
+    edit(index);
   }
 });
 
 window.addEventListener('load', () => {
-  const storedToDos = JSON.parse(localStorage.getItem('toDos'));
+  const storedToDos = JSON.parse(localStorage.getItem('todos'));
   if (storedToDos) {
     toDos = storedToDos;
     renderToDo();

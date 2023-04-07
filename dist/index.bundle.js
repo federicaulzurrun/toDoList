@@ -11,15 +11,53 @@ __webpack_require__.r(__webpack_exports__);
 
 const form = document.getElementById('list-form');
 const containerTask = document.getElementById('toDo-list');
+const newToDo = document.getElementById('imput-task');
 let toDos = [];
+
+// function add taks
+const addTask = () => {
+  const toDoValue = newToDo.value;
+  const emptyToDo = toDoValue === '';
+
+  if (emptyToDo) return;
+
+  const task = {
+    value: toDoValue,
+    completed: false,
+    id: toDos.length + 1,
+  };
+
+  newToDo.value = '';
+  toDos.push(task);
+  localStorage.setItem('todos', JSON.stringify(toDos));
+
+  (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)(); // llamamos a la función renderToDo para mostrar el nuevo elemento en la pantalla
+};
+
+// const addTask = () => {
+//   const toDoValue = newToDo.value;
+//   const emptyToDo = toDoValue === '';
+
+//   if (emptyToDo) return;
+//   const task = {
+//     value: toDoValue,
+//     completed: false,
+//     id: toDos.length + 1,
+//   };
+//   newToDo.value = '';
+//   toDos.push(task);
+//   localStorage.setItem('todos', JSON.stringify(toDos));
+// };
+const submitIcon = document.getElementById('submit-icon');
+submitIcon.addEventListener('click', addTask);
 
 // form submit
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.addTask)();
+  addTask();
   (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
-  localStorage.setItem('toDos', JSON.stringify(toDos));
+  localStorage.setItem('todos', JSON.stringify(toDos));
 });
 
 // delete task
@@ -37,47 +75,47 @@ containerTask.addEventListener('click', (event) => {
       toDos[i].id = i + 1;
     }
 
-    localStorage.setItem('toDos', JSON.stringify(toDos));
+    localStorage.setItem('todos', JSON.stringify(toDos));
   }
 });
 
 // clear all checked button
-
 const clearBtn = document.getElementById('clear-btn');
 clearBtn.addEventListener('click', () => {
   const tasks = document.querySelectorAll('.task');
   const completedTasks = [];
-  tasks.forEach((task, index) => {
+  const newToDos = []; // new list for remaing tasks
+  tasks.forEach((task) => {
     if (task.querySelector('.checkbox-input').checked) {
       const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
       const taskIndex = toDos.findIndex((task) => task.id === taskId);
-      toDos[taskIndex].id = index + 1;
-      task.querySelector('.text-input').setAttribute('data-id', index + 1);
       toDos.splice(taskIndex, 1);
       task.remove();
     } else {
       completedTasks.push(false);
+      const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
+      const taskIndex = toDos.findIndex((task) => task.id === taskId);
+      // Update the task index in the new list
+      newToDos.push({ ...toDos[taskIndex], id: newToDos.length + 1 });
     }
   });
-  localStorage.setItem('toDos', JSON.stringify(toDos));
+  // Update the variable on the new list
+  toDos = newToDos;
+  localStorage.setItem('todos', JSON.stringify(toDos));
 });
 
 // edit task
 containerTask.addEventListener('click', (event) => {
-  if (event.target.classList.contains('edit-task-icon')) {
-    const taskElement = event.target.parentNode;
-    const taskId = parseInt(taskElement.querySelector('.text-input').getAttribute('data-id'), 10);
-    const taskIndex = toDos.findIndex((task) => task.id === taskId);
-    const taskInput = taskElement.querySelector('.text-input');
-    const newTaskValue = taskInput.value;
-    toDos[taskIndex].value = newTaskValue;
-    localStorage.setItem('toDos', JSON.stringify(toDos));
-    (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
+  const textInput = event.target.closest('.text-input');
+  if (textInput) {
+    const textInputs = containerTask.querySelectorAll('.text-input');
+    const index = Array.from(textInputs).indexOf(textInput);
+    (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.edit)(index);
   }
 });
 
 window.addEventListener('load', () => {
-  const storedToDos = JSON.parse(localStorage.getItem('toDos'));
+  const storedToDos = JSON.parse(localStorage.getItem('todos'));
   if (storedToDos) {
     toDos = storedToDos;
     (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
@@ -394,7 +432,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "* {\n  padding: 0;\n  margin: 0;\n  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n}\n\nbody {\n  background-color: #f1f2f5;\n}\n\ni {\n  color: lightgray;\n}\n\n.mainTitle {\n  text-align: center;\n}\n\n/* container list */\n.container-list {\n  display: flex;\n  flex-direction: column;\n  align-self: center;\n  align-items: center;\n  justify-content: center;\n  background-color: #fff;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);\n  border-radius: 3px;\n  width: 50%;\n  margin-left: 26%;\n}\n\n/* list title */\n.titleListContainer {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  width: 100%;\n  justify-content: space-between;\n  align-self: center;\n}\n\n.toDoList-title {\n  padding-left: 2%;\n}\n\n.titleListContainer i {\n  padding-right: 2%;\n}\n\n/* Add container */\n.container-listForm {\n  width: 100%;\n}\n\n.list-form {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  width: 100%;\n  margin-bottom: 3%;\n  padding-bottom: 2%;\n  border-bottom: #ddd 1px solid;\n}\n\n.list-form input {\n  width: 90%;\n  height: 30px;\n  font-size: 0.8em;\n  padding-left: 2%;\n  outline: none;\n  border: none;\n}\n\n.list-form i {\n  padding-right: 2%;\n}\n\n/* List js content */\n.list-content {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  gap: 2%;\n}\n\n.task {\n  display: flex;\n  flex-direction: row;\n}\n\n.task-description {\n  display: flex;\n  justify-content: space-between;\n  border-bottom: 1px #ddd solid;\n  margin-bottom: 2.5%;\n  padding-bottom: 1%;\n}\n\n.task-text {\n  display: flex;\n  flex-direction: row;\n  width: 60%;\n  gap: 3%;\n  padding-left: 2%;\n}\n\n.task-input {\n  border: lightgray solid 1px;\n}\n\n.task-text p {\n  padding-left: 2%;\n}\n\n.task-description i {\n  padding-right: 2%;\n}\n\n.task-description:nth-child(3) {\n  margin-bottom: 0;\n}\n\n.btn-container {\n  display: flex;\n  justify-content: center;\n  width: 100%;\n}\n\n.btn {\n  width: 100%;\n  outline: none;\n  border: none;\n  background-color: #f1f2f5;\n  font-size: 1em;\n  cursor: pointer;\n  padding: 3% 0;\n  display: flex;\n  align-self: center;\n  justify-content: center;\n}\n\n.btn:hover {\n  transition: 0.5s ease-in-out;\n  background-color: darkgray;\n  color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "* {\n  padding: 0;\n  margin: 0;\n  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n}\n\nbody {\n  background-color: #f1f2f5;\n}\n\ni {\n  color: lightgray;\n}\n\ninput {\n  border: none;\n  outline: none;\n}\n\n.checkbox-input,\n.delete-task-icon, .fas {\n  cursor: pointer;\n}\n\n.mainTitle {\n  text-align: center;\n}\n\n/* container list */\n.container-list {\n  display: flex;\n  flex-direction: column;\n  align-self: center;\n  align-items: center;\n  justify-content: center;\n  background-color: #fff;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);\n  border-radius: 3px;\n  width: 50%;\n  margin-left: 26%;\n}\n\n/* list title */\n.titleListContainer {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  width: 100%;\n  justify-content: space-between;\n  align-self: center;\n}\n\n.toDoList-title {\n  padding-left: 2%;\n}\n\n.titleListContainer i {\n  padding-right: 2%;\n}\n\n/* Add container */\n.container-listForm {\n  width: 100%;\n}\n\n.list-form {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  width: 100%;\n  margin-bottom: 3%;\n  padding-bottom: 2%;\n  border-bottom: #ddd 1px solid;\n}\n\n.list-form input {\n  width: 90%;\n  height: 30px;\n  font-size: 0.8em;\n  padding-left: 2%;\n  outline: none;\n  border: none;\n}\n\n.list-form i {\n  padding-right: 2%;\n}\n\n/* List js content */\n.list-content {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  gap: 2%;\n}\n\n.task {\n  display: flex;\n  justify-content: space-between;\n  border-bottom: 1px #ddd solid;\n  margin-bottom: 2.5%;\n  padding-bottom: 1%;\n}\n\n.text {\n  display: flex;\n  flex-direction: row;\n  width: 60%;\n  gap: 3%;\n  padding-left: 2%;\n}\n\n.task-input {\n  border: 0;\n  width: 60%;\n  gap: 3%;\n  padding-left: 2%;\n\n}\n\n.task-text p {\n  padding-left: 2%;\n}\n\n.task-description i {\n  padding-right: 2%;\n}\n\n.task-description:nth-child(3) {\n  margin-bottom: 0;\n}\n\n.btn-container {\n  display: flex;\n  justify-content: center;\n  width: 100%;\n}\n\n.btn {\n  width: 100%;\n  outline: none;\n  border: none;\n  background-color: #f1f2f5;\n  font-size: 1em;\n  cursor: pointer;\n  padding: 3% 0;\n  display: flex;\n  align-self: center;\n  justify-content: center;\n}\n\n.btn:hover {\n  transition: 0.5s ease-in-out;\n  background-color: darkgray;\n  color: white;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -505,34 +543,14 @@ module.exports = function (cssWithMappingToString) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "addTask": () => (/* binding */ addTask),
+/* harmony export */   "edit": () => (/* binding */ edit),
 /* harmony export */   "renderToDo": () => (/* binding */ renderToDo)
 /* harmony export */ });
 const containerTask = document.getElementById('toDo-list');
-const newToDo = document.getElementById('imput-task');
-
-// vars
-let toDos = [];
-
-// function add taks
-const addTask = () => {
-  const toDoValue = newToDo.value;
-  const emptyToDo = toDoValue === '';
-
-  if (emptyToDo) return;
-  const task = {
-    value: toDoValue,
-    completed: false,
-    id: toDos.length + 1,
-  };
-  newToDo.value = '';
-  toDos = [...toDos, task];
-  localStorage.setItem('toDos', JSON.stringify(toDos));
-};
 
 // rendering the toDo list
 const renderToDo = () => {
-  const toDos = JSON.parse(localStorage.getItem('toDos')) || [];
+  const toDos = JSON.parse(localStorage.getItem('todos')) || [];
   containerTask.innerHTML = '';
   toDos.sort((a, b) => a.index - b.index);
   containerTask.innerHTML = '';
@@ -541,16 +559,21 @@ const renderToDo = () => {
       <div class="task">
         <input type="checkbox" class="checkbox-input">
         <input type="text" class="text-input" value="${toDos[i].value}" data-id="${toDos[i].id}">
-        <div class="edit-task-icon">&#x270E;</div>
-        <div class="delete-task-icon">&#x1F5D1;</div>
+        <i class="delete-task-icon fa-solid fa-trash"></i>
       </div>
     `;
     containerTask.innerHTML += html;
   }
 };
 
-/* Export functions */
-
+const edit = (index) => {
+  const tasksArray = JSON.parse(localStorage.getItem('todos')) || [];
+  const textInputs = document.querySelectorAll('.text-input');
+  textInputs[index].addEventListener('change', () => {
+    tasksArray[index].value = textInputs[index].value;
+    localStorage.setItem('todos', JSON.stringify(tasksArray));
+  });
+};
 
 
 /***/ })

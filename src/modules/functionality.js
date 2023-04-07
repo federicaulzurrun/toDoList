@@ -1,28 +1,8 @@
 const containerTask = document.getElementById('toDo-list');
-const newToDo = document.getElementById('imput-task');
-
-// vars
-let toDos = [];
-
-// function add taks
-const addTask = () => {
-  const toDoValue = newToDo.value;
-  const emptyToDo = toDoValue === '';
-
-  if (emptyToDo) return;
-  const task = {
-    value: toDoValue,
-    completed: false,
-    id: toDos.length + 1,
-  };
-  newToDo.value = '';
-  toDos = [...toDos, task];
-  localStorage.setItem('toDos', JSON.stringify(toDos));
-};
 
 // rendering the toDo list
-const renderToDo = () => {
-  const toDos = JSON.parse(localStorage.getItem('toDos')) || [];
+export const renderToDo = () => {
+  const toDos = JSON.parse(localStorage.getItem('todos')) || [];
   containerTask.innerHTML = '';
   toDos.sort((a, b) => a.index - b.index);
   containerTask.innerHTML = '';
@@ -31,15 +11,18 @@ const renderToDo = () => {
       <div class="task">
         <input type="checkbox" class="checkbox-input">
         <input type="text" class="text-input" value="${toDos[i].value}" data-id="${toDos[i].id}">
-        <div class="edit-task-icon">&#x270E;</div>
-        <div class="delete-task-icon">&#x1F5D1;</div>
+        <i class="delete-task-icon fa-solid fa-trash"></i>
       </div>
     `;
     containerTask.innerHTML += html;
   }
 };
 
-/* Export functions */
-export {
-  addTask, renderToDo,
+export const edit = (index) => {
+  const tasksArray = JSON.parse(localStorage.getItem('todos')) || [];
+  const textInputs = document.querySelectorAll('.text-input');
+  textInputs[index].addEventListener('change', () => {
+    tasksArray[index].value = textInputs[index].value;
+    localStorage.setItem('todos', JSON.stringify(tasksArray));
+  });
 };
