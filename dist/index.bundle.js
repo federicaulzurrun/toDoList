@@ -31,23 +31,9 @@ const addTask = () => {
   toDos.push(task);
   localStorage.setItem('todos', JSON.stringify(toDos));
 
-  (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)(); // llamamos a la función renderToDo para mostrar el nuevo elemento en la pantalla
+  (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)(); // we call the renderToDo function to display the new element on the screen
 };
 
-// const addTask = () => {
-//   const toDoValue = newToDo.value;
-//   const emptyToDo = toDoValue === '';
-
-//   if (emptyToDo) return;
-//   const task = {
-//     value: toDoValue,
-//     completed: false,
-//     id: toDos.length + 1,
-//   };
-//   newToDo.value = '';
-//   toDos.push(task);
-//   localStorage.setItem('todos', JSON.stringify(toDos));
-// };
 const submitIcon = document.getElementById('submit-icon');
 submitIcon.addEventListener('click', addTask);
 
@@ -70,8 +56,7 @@ containerTask.addEventListener('click', (event) => {
     taskElement.remove();
 
     // update the id of the remaining tasks
-    // eslint-disable-next-line no-plusplus
-    for (let i = taskIndex; i < toDos.length; i++) {
+    for (let i = taskIndex; i < toDos.length; i += 1) {
       toDos[i].id = i + 1;
     }
 
@@ -432,7 +417,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "* {\n  padding: 0;\n  margin: 0;\n  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n}\n\nbody {\n  background-color: #f1f2f5;\n}\n\ni {\n  color: lightgray;\n}\n\ninput {\n  border: none;\n  outline: none;\n}\n\n.checkbox-input,\n.delete-task-icon, .fas \n{\n  cursor: pointer;\n}\n\n.mainTitle {\n  text-align: center;\n}\n\n/* container list */\n.container-list {\n  display: flex;\n  flex-direction: column;\n  align-self: center;\n  align-items: center;\n  justify-content: center;\n  background-color: #fff;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);\n  border-radius: 3px;\n  width: 50%;\n  margin-left: 26%;\n}\n\n/* list title */\n.titleListContainer {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  width: 100%;\n  justify-content: space-between;\n  align-self: center;\n}\n\n.toDoList-title {\n  padding-left: 2%;\n}\n\n.titleListContainer i {\n  padding-right: 2%;\n}\n\n/* Add container */\n.container-listForm {\n  width: 100%;\n}\n\n.list-form {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  width: 100%;\n  margin-bottom: 3%;\n  padding-bottom: 2%;\n  border-bottom: #ddd 1px solid;\n}\n\n.list-form input {\n  width: 90%;\n  height: 30px;\n  font-size: 0.8em;\n  padding-left: 2%;\n  outline: none;\n  border: none;\n}\n\n.list-form i {\n  padding-right: 2%;\n}\n\n/* List js content */\n.list-content {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  gap: 2%;\n}\n\n.task {\n  display: flex;\n  justify-content: space-between;\n  border-bottom: 1px #ddd solid;\n  margin-bottom: 2.5%;\n  padding-bottom: 1%;\n  padding-left: 3%;\n  padding-right: 3%;\n}\n\n.text {\n  display: flex;\n  flex-direction: row;\n  width: 60%;\n  gap: 3%;\n  padding-left: 2%;\n}\n\n.task-input {\n  border: 0;\n  width: 60%;\n  gap: 3%;\n  padding-left: 2%;\n  justify-content: left;\n}\n\n.task-text p {\n  padding-left: 2%;\n}\n\n.task-description i {\n  padding-right: 2%;\n}\n\n.task-description:nth-child(3) {\n  margin-bottom: 0;\n}\n\n.btn-container {\n  display: flex;\n  justify-content: center;\n  width: 100%;\n}\n\n.btn {\n  width: 100%;\n  outline: none;\n  border: none;\n  background-color: #f1f2f5;\n  font-size: 1em;\n  cursor: pointer;\n  padding: 3% 0;\n  display: flex;\n  align-self: center;\n  justify-content: center;\n}\n\n.btn:hover {\n  transition: 0.5s ease-in-out;\n  background-color: darkgray;\n  color: white;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "* {\n  padding: 0;\n  margin: 0;\n  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n}\n\nbody {\n  background-color: #f1f2f5;\n}\n\ni {\n  color: lightgray;\n}\n\ninput {\n  border: none;\n  outline: none;\n}\n\n.checkbox-input,\n.delete-task-icon,\n.fas {\n  cursor: pointer;\n}\n\n.mainTitle {\n  text-align: center;\n}\n\n/* container list */\n.container-list {\n  display: flex;\n  flex-direction: column;\n  align-self: center;\n  align-items: center;\n  justify-content: center;\n  background-color: #fff;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);\n  border-radius: 3px;\n  width: 50%;\n  margin-left: 26%;\n}\n\n/* list title */\n.titleListContainer {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n  width: 100%;\n  justify-content: space-between;\n  align-self: center;\n}\n\n.toDoList-title {\n  padding-left: 2%;\n}\n\n.titleListContainer i {\n  padding-right: 2%;\n}\n\n/* Add container */\n.container-listForm {\n  width: 100%;\n}\n\n.list-form {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  width: 100%;\n  margin-bottom: 3%;\n  padding-bottom: 2%;\n  border-bottom: #ddd 1px solid;\n}\n\n.list-form input {\n  width: 90%;\n  height: 30px;\n  font-size: 0.8em;\n  padding-left: 2%;\n  outline: none;\n  border: none;\n}\n\n.list-form i {\n  padding-right: 2%;\n}\n\n/* List js content */\n.list-content {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  gap: 2%;\n}\n\n.task {\n  display: flex;\n  justify-content: space-between;\n  border-bottom: 1px #ddd solid;\n  margin-bottom: 2.5%;\n  padding-bottom: 1%;\n  padding-left: 3%;\n  padding-right: 3%;\n}\n\n.text {\n  display: flex;\n  flex-direction: row;\n  width: 60%;\n  gap: 3%;\n  padding-left: 2%;\n}\n\n.task-input {\n  border: 0;\n  width: 60%;\n  gap: 3%;\n  padding-left: 2%;\n  justify-content: left;\n}\n\n.task-text p {\n  padding-left: 2%;\n}\n\n.task-description i {\n  padding-right: 2%;\n}\n\n.task-description:nth-child(3) {\n  margin-bottom: 0;\n}\n\n.btn-container {\n  display: flex;\n  justify-content: center;\n  width: 100%;\n}\n\n.btn {\n  width: 100%;\n  outline: none;\n  border: none;\n  background-color: #f1f2f5;\n  font-size: 1em;\n  cursor: pointer;\n  padding: 3% 0;\n  display: flex;\n  align-self: center;\n  justify-content: center;\n}\n\n.btn:hover {\n  transition: 0.5s ease-in-out;\n  background-color: darkgray;\n  color: white;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

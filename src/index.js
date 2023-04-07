@@ -24,24 +24,9 @@ const addTask = () => {
   newToDo.value = '';
   toDos.push(task);
   localStorage.setItem('todos', JSON.stringify(toDos));
-
-  renderToDo(); // llamamos a la función renderToDo para mostrar el nuevo elemento en la pantalla
+  renderToDo(); // we call the renderToDo function to display the new element on the screen
 };
 
-// const addTask = () => {
-//   const toDoValue = newToDo.value;
-//   const emptyToDo = toDoValue === '';
-
-//   if (emptyToDo) return;
-//   const task = {
-//     value: toDoValue,
-//     completed: false,
-//     id: toDos.length + 1,
-//   };
-//   newToDo.value = '';
-//   toDos.push(task);
-//   localStorage.setItem('todos', JSON.stringify(toDos));
-// };
 const submitIcon = document.getElementById('submit-icon');
 submitIcon.addEventListener('click', addTask);
 
@@ -64,8 +49,7 @@ containerTask.addEventListener('click', (event) => {
     taskElement.remove();
 
     // update the id of the remaining tasks
-    // eslint-disable-next-line no-plusplus
-    for (let i = taskIndex; i < toDos.length; i++) {
+    for (let i = taskIndex; i < toDos.length; i += 1) {
       toDos[i].id = i + 1;
     }
 
