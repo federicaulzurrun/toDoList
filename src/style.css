@@ -121,6 +121,10 @@ input {
   justify-content: left;
 }
 
+.strike-through {
+  text-decoration: line-through;
+}
+
 .task-text p {
   padding-left: 2%;
 }

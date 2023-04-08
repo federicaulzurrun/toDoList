@@ -2,6 +2,7 @@ import './style.css';
 import {
   renderToDo, edit,
 } from './modules/functionality.js';
+import { TODOLIST, clearAll } from './modules/interactive.js';
 
 const form = document.getElementById('list-form');
 const containerTask = document.getElementById('toDo-list');
@@ -58,29 +59,46 @@ containerTask.addEventListener('click', (event) => {
 });
 
 // clear all checked button
+const todo = new TODOLIST();
+containerTask.addEventListener('click', (event) => {
+  const checkBox = event.target.closest('.checkbox-input');
+  if (checkBox) {
+    const checkBoxes = containerTask.querySelectorAll('.checkbox-input');
+    const id = Array.from(checkBoxes).indexOf(checkBox);
+    todo.strikeThrough(id);
+    renderToDo();
+  }
+});
+
 const clearBtn = document.getElementById('clear-btn');
 clearBtn.addEventListener('click', () => {
-  const tasks = document.querySelectorAll('.task');
-  const completedTasks = [];
-  const newToDos = []; // new list for remaing tasks
-  tasks.forEach((task) => {
-    if (task.querySelector('.checkbox-input').checked) {
-      const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
-      const taskIndex = toDos.findIndex((task) => task.id === taskId);
-      toDos.splice(taskIndex, 1);
-      task.remove();
-    } else {
-      completedTasks.push(false);
-      const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
-      const taskIndex = toDos.findIndex((task) => task.id === taskId);
-      // Update the task index in the new list
-      newToDos.push({ ...toDos[taskIndex], id: newToDos.length + 1 });
-    }
-  });
-  // Update the variable on the new list
-  toDos = newToDos;
-  localStorage.setItem('todos', JSON.stringify(toDos));
+  clearAll();
+  renderToDo();
 });
+
+// const clearBtn = document.getElementById('clear-btn');
+// clearBtn.addEventListener('click', () => {
+//   const tasks = document.querySelectorAll('.task');
+//   const completedTasks = [];
+//   const newToDos = []; // new list for remaing tasks
+//   tasks.forEach((task) => {
+//     if (task.querySelector('.checkbox-input').checked) {
+//       const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
+//       const taskIndex = toDos.findIndex((task) => task.id === taskId);
+//       toDos.splice(taskIndex, 1);
+//       task.remove();
+//     } else {
+//       completedTasks.push(false);
+//       const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
+//       const taskIndex = toDos.findIndex((task) => task.id === taskId);
+//       // Update the task index in the new list
+//       newToDos.push({ ...toDos[taskIndex], id: newToDos.length + 1 });
+//     }
+//   });
+//   // Update the variable on the new list
+//   toDos = newToDos;
+//   localStorage.setItem('todos', JSON.stringify(toDos));
+// });
 
 // edit task
 containerTask.addEventListener('click', (event) => {
