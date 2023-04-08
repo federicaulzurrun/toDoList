@@ -7,10 +7,12 @@ export const renderToDo = () => {
   toDos.sort((a, b) => a.index - b.index);
   containerTask.innerHTML = '';
   for (let i = 0; i < toDos.length; i += 1) {
+    const checked = toDos[i].completed ? 'checked' : '';
+    const strike = toDos[i].completed ? 'strike-through' : '';
     const html = `
       <div class="task">
-        <input type="checkbox" class="checkbox-input">
-        <input type="text" class="text-input" value="${toDos[i].value}" data-id="${toDos[i].id}">
+        <input type="checkbox" class="checkbox-input" ${checked}>
+        <input type="text" class="text-input ${strike}" value="${toDos[i].value}" data-id="${toDos[i].id}">
         <i class="delete-task-icon fa-solid fa-trash"></i>
       </div>
     `;
