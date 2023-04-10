@@ -76,30 +76,6 @@ clearBtn.addEventListener('click', () => {
   renderToDo();
 });
 
-// const clearBtn = document.getElementById('clear-btn');
-// clearBtn.addEventListener('click', () => {
-//   const tasks = document.querySelectorAll('.task');
-//   const completedTasks = [];
-//   const newToDos = []; // new list for remaing tasks
-//   tasks.forEach((task) => {
-//     if (task.querySelector('.checkbox-input').checked) {
-//       const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
-//       const taskIndex = toDos.findIndex((task) => task.id === taskId);
-//       toDos.splice(taskIndex, 1);
-//       task.remove();
-//     } else {
-//       completedTasks.push(false);
-//       const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
-//       const taskIndex = toDos.findIndex((task) => task.id === taskId);
-//       // Update the task index in the new list
-//       newToDos.push({ ...toDos[taskIndex], id: newToDos.length + 1 });
-//     }
-//   });
-//   // Update the variable on the new list
-//   toDos = newToDos;
-//   localStorage.setItem('todos', JSON.stringify(toDos));
-// });
-
 // edit task
 containerTask.addEventListener('click', (event) => {
   const textInput = event.target.closest('.text-input');
