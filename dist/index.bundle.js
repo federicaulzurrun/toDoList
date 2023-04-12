@@ -16,7 +16,7 @@ const containerTask = document.getElementById('toDo-list');
 const newToDo = document.getElementById('imput-task');
 let toDos = [];
 
-// function add taks
+// arrow function add task
 const addTask = () => {
   const toDoValue = newToDo.value;
   const emptyToDo = toDoValue === '';
@@ -32,8 +32,35 @@ const addTask = () => {
   newToDo.value = '';
   toDos.push(task);
   localStorage.setItem('todos', JSON.stringify(toDos));
-  (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)(); // we call the renderToDo function to display the new element on the screen
+
+  // update the task value of the edited input before rendering the tasks
+  const editedInput = containerTask.querySelector('.text-input.edit');
+  if (editedInput) {
+    const taskId = parseInt(editedInput.getAttribute('data-id'), 10);
+    const taskIndex = toDos.findIndex((task) => task.id === taskId);
+    toDos[taskIndex].value = editedInput.value;
+    editedInput.classList.remove('edit');
+  }
+
+  (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
 };
+// const addTask = () => {
+//   const toDoValue = newToDo.value;
+//   const emptyToDo = toDoValue === '';
+
+//   if (emptyToDo) return;
+
+//   const task = {
+//     value: toDoValue,
+//     completed: false,
+//     id: toDos.length + 1,
+//   };
+
+//   newToDo.value = '';
+//   toDos.push(task);
+//   localStorage.setItem('todos', JSON.stringify(toDos));
+//   renderToDo(); // we call the renderToDo function to display the new element on the screen
+// };
 
 const submitIcon = document.getElementById('submit-icon');
 submitIcon.addEventListener('click', addTask);
@@ -65,14 +92,12 @@ containerTask.addEventListener('click', (event) => {
   }
 });
 
-// clear all checked button
-const todo = new _modules_interactive_js__WEBPACK_IMPORTED_MODULE_2__.TODOLIST();
 containerTask.addEventListener('click', (event) => {
   const checkBox = event.target.closest('.checkbox-input');
   if (checkBox) {
     const checkBoxes = containerTask.querySelectorAll('.checkbox-input');
     const id = Array.from(checkBoxes).indexOf(checkBox);
-    todo.strikeThrough(id);
+    (0,_modules_interactive_js__WEBPACK_IMPORTED_MODULE_2__.strikeThrough)(id);
     (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
   }
 });
@@ -83,30 +108,7 @@ clearBtn.addEventListener('click', () => {
   (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
 });
 
-// const clearBtn = document.getElementById('clear-btn');
-// clearBtn.addEventListener('click', () => {
-//   const tasks = document.querySelectorAll('.task');
-//   const completedTasks = [];
-//   const newToDos = []; // new list for remaing tasks
-//   tasks.forEach((task) => {
-//     if (task.querySelector('.checkbox-input').checked) {
-//       const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
-//       const taskIndex = toDos.findIndex((task) => task.id === taskId);
-//       toDos.splice(taskIndex, 1);
-//       task.remove();
-//     } else {
-//       completedTasks.push(false);
-//       const taskId = parseInt(task.querySelector('.text-input').getAttribute('data-id'), 10);
-//       const taskIndex = toDos.findIndex((task) => task.id === taskId);
-//       // Update the task index in the new list
-//       newToDos.push({ ...toDos[taskIndex], id: newToDos.length + 1 });
-//     }
-//   });
-//   // Update the variable on the new list
-//   toDos = newToDos;
-//   localStorage.setItem('todos', JSON.stringify(toDos));
-// });
-
+// edit task
 // edit task
 containerTask.addEventListener('click', (event) => {
   const textInput = event.target.closest('.text-input');
@@ -114,8 +116,18 @@ containerTask.addEventListener('click', (event) => {
     const textInputs = containerTask.querySelectorAll('.text-input');
     const index = Array.from(textInputs).indexOf(textInput);
     (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.edit)(index);
+
+    // add a blur listener to update the task value when the user leaves the input
+    textInput.addEventListener('blur', () => {
+      const taskId = parseInt(textInput.getAttribute('data-id'), 10);
+      const taskIndex = toDos.findIndex((task) => task.id === taskId);
+      toDos[taskIndex].value = textInput.value;
+      localStorage.setItem('todos', JSON.stringify(toDos));
+    });
   }
 });
+
+// arrow function add task
 
 window.addEventListener('load', () => {
   const storedToDos = JSON.parse(localStorage.getItem('todos'));
@@ -124,6 +136,7 @@ window.addEventListener('load', () => {
     (0,_modules_functionality_js__WEBPACK_IMPORTED_MODULE_1__.renderToDo)();
   }
 });
+
 
 /***/ }),
 /* 1 */
@@ -574,8 +587,15 @@ const renderToDo = () => {
 const edit = (index) => {
   const tasksArray = JSON.parse(localStorage.getItem('todos')) || [];
   const textInputs = document.querySelectorAll('.text-input');
+  const task = tasksArray[index];
+
   textInputs[index].addEventListener('change', () => {
-    tasksArray[index].value = textInputs[index].value;
+    task.value = textInputs[index].value;
+    localStorage.setItem('todos', JSON.stringify(tasksArray));
+  });
+
+  textInputs[index].addEventListener('blur', () => {
+    task.value = textInputs[index].value;
     localStorage.setItem('todos', JSON.stringify(tasksArray));
   });
 };
@@ -587,26 +607,24 @@ const edit = (index) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TODOLIST": () => (/* binding */ TODOLIST),
-/* harmony export */   "clearAll": () => (/* binding */ clearAll)
+/* harmony export */   "clearAll": () => (/* binding */ clearAll),
+/* harmony export */   "strikeThrough": () => (/* binding */ strikeThrough)
 /* harmony export */ });
 /* harmony import */ var _functionality_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
 
 
-class TODOLIST {
-  strikeThrough(id) {
-    this.toDos = JSON.parse(localStorage.getItem('todos')) || [];
-    const checkBoxes = document.querySelectorAll('.checkbox-input');
-    if (checkBoxes[id].checked) {
-      this.toDos[id].completed = true;
-      localStorage.setItem('todos', JSON.stringify(this.toDos));
-      (0,_functionality_js__WEBPACK_IMPORTED_MODULE_0__.renderToDo)();
-    } else {
-      this.toDos[id].completed = false;
-      localStorage.setItem('todos', JSON.stringify(this.toDos));
-    }
+const strikeThrough = (id) => {
+  const toDos = JSON.parse(localStorage.getItem('todos')) || [];
+  const checkBoxes = document.querySelectorAll('.checkbox-input');
+  if (checkBoxes[id].checked) {
+    toDos[id].completed = true;
+    localStorage.setItem('todos', JSON.stringify(toDos));
+    (0,_functionality_js__WEBPACK_IMPORTED_MODULE_0__.renderToDo)();
+  } else {
+    toDos[id].completed = false;
+    localStorage.setItem('todos', JSON.stringify(toDos));
   }
-}
+};
 
 const clearAll = () => {
   const toDos = JSON.parse(localStorage.getItem('todos')) || [];

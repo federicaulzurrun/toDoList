@@ -23,8 +23,15 @@ export const renderToDo = () => {
 export const edit = (index) => {
   const tasksArray = JSON.parse(localStorage.getItem('todos')) || [];
   const textInputs = document.querySelectorAll('.text-input');
+  const task = tasksArray[index];
+
   textInputs[index].addEventListener('change', () => {
-    tasksArray[index].value = textInputs[index].value;
+    task.value = textInputs[index].value;
+    localStorage.setItem('todos', JSON.stringify(tasksArray));
+  });
+
+  textInputs[index].addEventListener('blur', () => {
+    task.value = textInputs[index].value;
     localStorage.setItem('todos', JSON.stringify(tasksArray));
   });
 };

@@ -1,19 +1,17 @@
 import { renderToDo } from './functionality.js';
 
-class TODOLIST {
-  strikeThrough(id) {
-    this.toDos = JSON.parse(localStorage.getItem('todos')) || [];
-    const checkBoxes = document.querySelectorAll('.checkbox-input');
-    if (checkBoxes[id].checked) {
-      this.toDos[id].completed = true;
-      localStorage.setItem('todos', JSON.stringify(this.toDos));
-      renderToDo();
-    } else {
-      this.toDos[id].completed = false;
-      localStorage.setItem('todos', JSON.stringify(this.toDos));
-    }
+const strikeThrough = (id) => {
+  const toDos = JSON.parse(localStorage.getItem('todos')) || [];
+  const checkBoxes = document.querySelectorAll('.checkbox-input');
+  if (checkBoxes[id].checked) {
+    toDos[id].completed = true;
+    localStorage.setItem('todos', JSON.stringify(toDos));
+    renderToDo();
+  } else {
+    toDos[id].completed = false;
+    localStorage.setItem('todos', JSON.stringify(toDos));
   }
-}
+};
 
 const clearAll = () => {
   const toDos = JSON.parse(localStorage.getItem('todos')) || [];
@@ -29,4 +27,4 @@ const clearAll = () => {
   localStorage.setItem('todos', JSON.stringify(toDos));
 };
 
-export { TODOLIST, clearAll };
+export { strikeThrough, clearAll };
