@@ -38,23 +38,6 @@ const addTask = () => {
 
   renderToDo();
 };
-// const addTask = () => {
-//   const toDoValue = newToDo.value;
-//   const emptyToDo = toDoValue === '';
-
-//   if (emptyToDo) return;
-
-//   const task = {
-//     value: toDoValue,
-//     completed: false,
-//     id: toDos.length + 1,
-//   };
-
-//   newToDo.value = '';
-//   toDos.push(task);
-//   localStorage.setItem('todos', JSON.stringify(toDos));
-//   renderToDo(); // we call the renderToDo function to display the new element on the screen
-// };
 
 const submitIcon = document.getElementById('submit-icon');
 submitIcon.addEventListener('click', addTask);
